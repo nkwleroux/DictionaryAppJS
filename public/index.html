@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- links -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!-- CDN links for icon -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+
+    <link rel="shortcut icon" href="#" />
+
+    <title>English Dictionary</title>
+  </head>
+  <body>
+    <grid class="accountBar" id="account">
+      <header>Account Info</header>
+      <span id="accountDetail">No account</span>
+      <button id="accountBtn" type="button" class="btn btn-outline-primary">Log in</button>
+    </grid>
+    <grid class="contentWrapper">
+      <div id="wrapper" class="wrapper">
+        <header>English Dictionary</header>
+        <div class="search">
+          <input
+            type="text"
+            placeholder="Search a word"
+            required
+            spellcheck="true"
+          />
+          <i class="fas fa-search"></i>
+          <span class="material-icons">close</span>
+        </div>
+        <p class="info-text"></p>
+        <ul>
+          <li class="word">
+            <div class="details">
+              <strong>__</strong>
+              <span>_ _</span>
+            </div>
+            <i class="fas fa-volume-up"></i>
+          </li>
+          <div class="content">
+            <li class="wordsList">
+              <div class="list"></div>
+            </li>
+            <li class="synonyms">
+              <div class="details">
+                <p>Synonyms</p>
+                <div class="list"></div>
+              </div>
+            </li>
+            <li class="antonyms">
+              <div class="details">
+                <p>antonyms</p>
+                <div class="list"></div>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <grid class="sidebar" id="searchHistory">
+        <header>Search history</header>
+        <div class="list"></div>
+        <button id="downloadBtn" type="button" class="btn btn-outline-primary">
+          <span> Download</span>
+          <svg
+            id="downloadIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-download"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
+            />
+            <path
+              d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
+            />
+          </svg>
+        </button>
+      </grid>
+    </grid>
+
+    <script src="./index.js"></script>
+    
+  </body>
+</html>

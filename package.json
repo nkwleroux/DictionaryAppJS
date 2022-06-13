@@ -1,0 +1,25 @@
+{
+  "name": "dictionaryapp",
+  "version": "1.0.0",
+  "description": "InternettechnologieApp",
+  "main": "./public/app.js",
+  "scripts": {
+    "start": "node ./public/app.js",
+    "dev": "nodemon --watch . ./public/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicholas Le Roux",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.1",
+    "express": "^4.17.3",
+    "firebase": "^9.6.10",
+    "json2xls": "^0.1.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "keywords": []
+}
