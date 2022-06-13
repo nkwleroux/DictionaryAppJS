@@ -151,32 +151,37 @@ app.get("/api/searchHistory", (req, res) => {
   });
 });
 
-app.post("/download", jsonParser, async (req, res) => {
-  bodyData = req.body.data;
-  let data = JSON.stringify(bodyData);
+//*****************************************************************************************
+// Download button doesnt work on AWS server
 
-  await writeFilePromise(
-    path.resolve(__dirname, "./data/searchHistory.json"),
-    `${data}`,
-    "utf-8"
-  );
+// app.post("/download", jsonParser, async (req, res) => {
+//   bodyData = req.body.data;
+//   let data = JSON.stringify(bodyData);
 
-  var xls = json2xls(bodyData);
+//   await writeFilePromise(
+//     path.resolve(__dirname, "./data/searchHistory.json"),
+//     `${data}`,
+//     "utf-8"
+//   );
 
-  await writeFilePromise(filePath, xls, "binary")
-    .then(() => {
-      res.status(200).send(`${data}`);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error");
-    });
-});
+//   var xls = json2xls(bodyData);
 
-//!BUG - Phonetics column doesnt appear in excel sheet when = "" or undefined.
-app.get("/download", async (req, res) => {
-  res.status(200).xls("data.xlsx", bodyData);
-});
+//   await writeFilePromise(filePath, xls, "binary")
+//     .then(() => {
+//       res.status(200).send(`${data}`);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(500).send("Error");
+//     });
+// });
+
+// //!BUG - Phonetics column doesnt appear in excel sheet when = "" or undefined.
+// app.get("/download", async (req, res) => {
+//   res.status(200).xls("data.xlsx", bodyData);
+// });
+
+//*****************************************************************************************
 
 app.all("*", (req, res) => {
   res.status(404).sendFile(path.resolve(__dirname, "./404.html"));

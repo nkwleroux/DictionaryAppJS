@@ -28,51 +28,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
   user = localStorage['user'];
 
-  var url = "/"; // The backend URL which expects your data
+  if(user != undefined){
+    var url = "/"; // The backend URL which expects your data
 
-  let xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
-  xmlhttp.open("POST", url, true);
+    let xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+    xmlhttp.open("POST", url, true);
 
-  // Set the request format
-  xmlhttp.setRequestHeader("Accept", "application/Json");
-  xmlhttp.setRequestHeader("Content-Type", "application/Json");
+    // Set the request format
+    xmlhttp.setRequestHeader("Accept", "application/Json");
+    xmlhttp.setRequestHeader("Content-Type", "application/Json");
 
-  //When data is recieved from the server
-  xmlhttp.onreadystatechange = function () {
-    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-      console.log(xmlhttp.responseText);
-      if(xmlhttp.responseText == "logged in"){
-        accountDetail.style.display = "block";
-        accountDetail.innerHTML = user;
-        accountBtn.innerHTML = "Logout";
-      }else{
-        accountDetail.innerHTML = "No account";
-        accountDetail.style.display = "none";
-        accountBtn.innerHTML = "Log in";
+    //When data is recieved from the server
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        console.log(xmlhttp.responseText);
+        if(xmlhttp.responseText == "logged in"){
+          accountDetail.style.display = "block";
+          accountDetail.innerHTML = user;
+          accountBtn.innerHTML = "Logout";
+        }else{
+          accountDetail.innerHTML = "No account";
+          accountDetail.style.display = "none";
+          accountBtn.innerHTML = "Log in";
+        }
       }
-    }
-  };
+    };
 
-  jsonData = JSON.stringify({
-    user: user,
-  });
+    jsonData = JSON.stringify({
+      user: user,
+    });
 
-  xmlhttp.send(jsonData);
-  
-  //TODO - DOESNT WORK properly
-  // list = JSON.parse(localStorage['list']);
-  // console.log(list);
-  // const sidebar = document.querySelector(".sidebar .list");
-  // sidebar.innerHTML = "";
-  // list.forEach(word => {
-  //   addToListSidebar(word);
-  // });
-
-  // if (user != undefined && user != "") {
-  //   accountDetail.style.display = "block";
-  //   accountDetail.innerHTML = user;
-  //   accountBtn.innerHTML = "Logout";
-  // }
+    xmlhttp.send(jsonData);
+  }
 
   if (searchInput.value != undefined && searchInput.value != "") {
     search(searchInput.value);
@@ -340,24 +327,29 @@ function mapJsonDataToArray(jsonData) {
   return { data: jsonData };
 }
 
-downloadBtn.addEventListener("click", async () => {
-  var url = "/download"; // The backend URL which expects your data
+//*****************************************************************************
+//Download button doesn't work on AWS server
 
-  var xmlhttp = postDataRequest(url);
+// downloadBtn.addEventListener("click", async () => {
+//   var url = "/download"; // The backend URL which expects your data
 
-  //When data is recieved from the server
-  xmlhttp.onreadystatechange = function () {
-    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-      window.open("/download");
-    }
-  };
+//   var xmlhttp = postDataRequest(url);
 
-  var jsonData = await getWordListData(list);
-  let dataArray = mapJsonDataToArray(jsonData);
+//   //When data is recieved from the server
+//   xmlhttp.onreadystatechange = function () {
+//     if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+//       window.open("/download");
+//     }
+//   };
 
-  // JSON encode the data by stringifying it before sending to the server
-  xmlhttp.send(JSON.stringify(dataArray));
-});
+//   var jsonData = await getWordListData(list);
+//   let dataArray = mapJsonDataToArray(jsonData);
+
+//   // JSON encode the data by stringifying it before sending to the server
+//   xmlhttp.send(JSON.stringify(dataArray));
+// });
+
+//*****************************************************************************
 
 accountBtn.addEventListener("click", async () => {
 
