@@ -4,9 +4,9 @@ const volume = wrapper.querySelector(".word i");
 const infoText = wrapper.querySelector(".info-text");
 const removeIcon = wrapper.querySelector(".search span");
 const content = wrapper.querySelector("ul .content");
-const downloadBtn = document.getElementById("downloadBtn");
+// const downloadBtn = document.getElementById("downloadBtn");
 const accountBtn = document.getElementById("accountBtn");
-
+const history = document.querySelector(".sidebar .list");
 //!BUG user account info still stays clientside if server crashes.
 const accountDetail = document.getElementById("accountDetail");
 let audio;
@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   user = localStorage['user'];
 
-  if(user != undefined){
+  console.log(user);
+
+  if(user != undefined && user != ""){
     var url = "/"; // The backend URL which expects your data
 
     let xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
@@ -50,6 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
           accountDetail.innerHTML = "No account";
           accountDetail.style.display = "none";
           accountBtn.innerHTML = "Log in";
+          history.innerHTML = "";
+          searchInput.value = "";
+          wrapper.classList.remove("active");
+          infoText.innerHTML = ``;
         }
       }
     };
@@ -372,8 +378,10 @@ accountBtn.addEventListener("click", async () => {
         accountDetail.style.display = "none";
         accountBtn.innerHTML = "Log in";
         localStorage.removeItem('user');
-        //TODO - DOESNT WORK
-        // localStorage.removeItem('list');
+        history.innerHTML = "";
+        searchInput.value = "";
+        wrapper.classList.remove("active");
+        infoText.innerHTML = ``;
       }
     }
   };
