@@ -4,9 +4,9 @@ const volume = wrapper.querySelector(".word i");
 const infoText = wrapper.querySelector(".info-text");
 const removeIcon = wrapper.querySelector(".search span");
 const content = wrapper.querySelector("ul .content");
-// const downloadBtn = document.getElementById("downloadBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 const accountBtn = document.getElementById("accountBtn");
-const history = document.querySelector(".sidebar .list");
+
 //!BUG user account info still stays clientside if server crashes.
 const accountDetail = document.getElementById("accountDetail");
 let audio;
@@ -28,44 +28,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
   user = localStorage['user'];
 
-  console.log(user);
+  var url = "/"; // The backend URL which expects your data
 
-  if(user != undefined && user != ""){
-    var url = "/"; // The backend URL which expects your data
+  let xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+  xmlhttp.open("POST", url, true);
 
-    let xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
-    xmlhttp.open("POST", url, true);
+  // Set the request format
+  xmlhttp.setRequestHeader("Accept", "application/Json");
+  xmlhttp.setRequestHeader("Content-Type", "application/Json");
 
-    // Set the request format
-    xmlhttp.setRequestHeader("Accept", "application/Json");
-    xmlhttp.setRequestHeader("Content-Type", "application/Json");
-
-    //When data is recieved from the server
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        console.log(xmlhttp.responseText);
-        if(xmlhttp.responseText == "logged in"){
-          accountDetail.style.display = "block";
-          accountDetail.innerHTML = user;
-          accountBtn.innerHTML = "Logout";
-        }else{
-          accountDetail.innerHTML = "No account";
-          accountDetail.style.display = "none";
-          accountBtn.innerHTML = "Log in";
-          history.innerHTML = "";
-          searchInput.value = "";
-          wrapper.classList.remove("active");
-          infoText.innerHTML = ``;
-        }
+  //When data is recieved from the server
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+      console.log(xmlhttp.responseText);
+      if(xmlhttp.responseText == "logged in"){
+        accountDetail.style.display = "block";
+        accountDetail.innerHTML = user;
+        accountBtn.innerHTML = "Logout";
+      }else{
+        accountDetail.innerHTML = "No account";
+        accountDetail.style.display = "none";
+        accountBtn.innerHTML = "Log in";
       }
-    };
+    }
+  };
 
-    jsonData = JSON.stringify({
-      user: user,
-    });
+  jsonData = JSON.stringify({
+    user: user,
+  });
 
-    xmlhttp.send(jsonData);
-  }
+  xmlhttp.send(jsonData);
+  
+  //TODO - DOESNT WORK properly
+  // list = JSON.parse(localStorage['list']);
+  // console.log(list);
+  // const sidebar = document.querySelector(".sidebar .list");
+  // sidebar.innerHTML = "";
+  // list.forEach(word => {
+  //   addToListSidebar(word);
+  // });
+
+  // if (user != undefined && user != "") {
+  //   accountDetail.style.display = "block";
+  //   accountDetail.innerHTML = user;
+  //   accountBtn.innerHTML = "Logout";
+  // }
 
   if (searchInput.value != undefined && searchInput.value != "") {
     search(searchInput.value);
@@ -333,29 +340,24 @@ function mapJsonDataToArray(jsonData) {
   return { data: jsonData };
 }
 
-//*****************************************************************************
-//Download button doesn't work on AWS server
+downloadBtn.addEventListener("click", async () => {
+  var url = "/download"; // The backend URL which expects your data
 
-// downloadBtn.addEventListener("click", async () => {
-//   var url = "/download"; // The backend URL which expects your data
+  var xmlhttp = postDataRequest(url);
 
-//   var xmlhttp = postDataRequest(url);
+  //When data is recieved from the server
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+      window.open("/download");
+    }
+  };
 
-//   //When data is recieved from the server
-//   xmlhttp.onreadystatechange = function () {
-//     if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-//       window.open("/download");
-//     }
-//   };
+  var jsonData = await getWordListData(list);
+  let dataArray = mapJsonDataToArray(jsonData);
 
-//   var jsonData = await getWordListData(list);
-//   let dataArray = mapJsonDataToArray(jsonData);
-
-//   // JSON encode the data by stringifying it before sending to the server
-//   xmlhttp.send(JSON.stringify(dataArray));
-// });
-
-//*****************************************************************************
+  // JSON encode the data by stringifying it before sending to the server
+  xmlhttp.send(JSON.stringify(dataArray));
+});
 
 accountBtn.addEventListener("click", async () => {
 
@@ -378,10 +380,8 @@ accountBtn.addEventListener("click", async () => {
         accountDetail.style.display = "none";
         accountBtn.innerHTML = "Log in";
         localStorage.removeItem('user');
-        history.innerHTML = "";
-        searchInput.value = "";
-        wrapper.classList.remove("active");
-        infoText.innerHTML = ``;
+        //TODO - DOESNT WORK
+        // localStorage.removeItem('list');
       }
     }
   };
